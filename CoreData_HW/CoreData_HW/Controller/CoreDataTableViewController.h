@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSManagedObjectContext* managedObjectContext;
 
 - (void)configureCell:(UITableViewCell *)cell withObject:(id)dataObject;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 

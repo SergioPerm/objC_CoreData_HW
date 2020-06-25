@@ -85,7 +85,11 @@
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    [self.tableView beginUpdates];
+    
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+        [self.tableView beginUpdates];
+    });
+    
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
