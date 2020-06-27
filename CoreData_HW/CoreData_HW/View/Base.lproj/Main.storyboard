@@ -231,13 +231,13 @@
         <!--Course detail-->
         <scene sceneID="CmS-G3-XLd">
             <objects>
-                <tableViewController id="0CZ-1c-sJS" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="CourseDetailView" id="0CZ-1c-sJS" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="kYh-wb-s6F">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CourseTextCell" id="RiL-cV-n33">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CourseTextCell" id="RiL-cV-n33" customClass="CourseDetailTextTableViewCell">
                                 <rect key="frame" x="0.0" y="28" width="375" height="49"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RiL-cV-n33" id="hom-G7-glE">
@@ -266,8 +266,12 @@
                                         <constraint firstItem="CcY-wv-Tcf" firstAttribute="width" secondItem="hom-G7-glE" secondAttribute="width" multiplier="0.55" id="yjW-zz-O9f"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="ibTextField" destination="CcY-wv-Tcf" id="K88-GU-x7C"/>
+                                    <outlet property="ibTextLabel" destination="FT0-t5-gqP" id="5JI-Di-weu"/>
+                                </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CourseButtonCell" id="K5j-dh-3Vc" customClass="UserDetailTextTableViewCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CourseButtonCell" id="K5j-dh-3Vc" customClass="CourseDetailAddStudentsTableViewCell">
                                 <rect key="frame" x="0.0" y="77" width="375" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="K5j-dh-3Vc" id="OGX-th-FAf">
@@ -278,6 +282,9 @@
                                             <rect key="frame" x="16" y="5" width="343" height="34"/>
                                             <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <state key="normal" title="Add users"/>
+                                            <connections>
+                                                <action selector="actionAddUsers:" destination="K5j-dh-3Vc" eventType="touchUpInside" id="VEI-bL-431"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>
@@ -286,8 +293,11 @@
                                         <constraint firstItem="AvO-Ka-svb" firstAttribute="leading" secondItem="OGX-th-FAf" secondAttribute="leading" constant="16" id="sbC-Ci-m5D"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="ibAddUsersBtn" destination="OGX-th-FAf" id="jea-XR-bdg"/>
+                                </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CourseUserCell" id="RaY-1p-Qrb" customClass="UserTableViewCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CourseUserCell" id="RaY-1p-Qrb" customClass="CourseDetailUserTableViewCell">
                                 <rect key="frame" x="0.0" y="120.5" width="375" height="53.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RaY-1p-Qrb" id="bwY-T0-cPc">
@@ -330,8 +340,8 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="ibEmailLabel" destination="HN4-ZT-5LB" id="nbX-NK-Rcu"/>
-                                    <outlet property="ibNameLabel" destination="YG8-a4-VkN" id="6a6-DH-bsZ"/>
+                                    <outlet property="ibEmailLabel" destination="HN4-ZT-5LB" id="d7C-2r-jrp"/>
+                                    <outlet property="ibNameLabel" destination="YG8-a4-VkN" id="Aah-h7-1D7"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -411,7 +421,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ky3-Mt-Xiv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-721" y="-145"/>
+            <point key="canvasLocation" x="-951" y="230"/>
         </scene>
     </scenes>
     <resources>
