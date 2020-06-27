@@ -1,5 +1,5 @@
 //
-//  User+CoreDataClass.h
+//  Course+CoreDataClass.h
 //  CoreData_HW
 //
 //  Created by kluv on 26/06/2020.
@@ -10,14 +10,14 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Course;
+@class User;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface User : NSManagedObject
+@interface Course : NSManagedObject
 
 @end
 
 NS_ASSUME_NONNULL_END
 
-#import "User+CoreDataProperties.h"
+#import "Course+CoreDataProperties.h"

@@ -1,5 +1,5 @@
 //
-//  User+CoreDataClass.m
+//  Course+CoreDataClass.m
 //  CoreData_HW
 //
 //  Created by kluv on 26/06/2020.
@@ -7,8 +7,8 @@
 //
 //
 
-#import "User+CoreDataClass.h"
+#import "Course+CoreDataClass.h"
 
-@implementation User
+@implementation Course
 
 @end

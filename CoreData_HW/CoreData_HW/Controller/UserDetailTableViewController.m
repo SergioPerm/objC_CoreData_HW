@@ -31,6 +31,87 @@ typedef NS_ENUM(NSInteger, UserTextFieldType) {
     
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    
+    NSLog(@"");
+    
+}
+
+#pragma mark - Methods
+
+- (BOOL)validateEmailWithString:(NSString*)email {
+    
+    NSString *emailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    
+    return [emailTest evaluateWithObject:email];
+    
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    
+    if (![self validateEmailWithString: textField.text]) {
+        textField.backgroundColor = [UIColor systemPinkColor];
+    } else {
+        textField.backgroundColor = nil;
+    }
+    
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    
+    NSInteger textFieldIndex = [self.cellsTextFieldsArray indexOfObject:textField];
+    
+    if (textFieldIndex < [self.cellsTextFieldsArray count] - 1) {
+        UITextField *nextTextField = [self.cellsTextFieldsArray objectAtIndex:textFieldIndex + 1];
+        [nextTextField becomeFirstResponder];
+    } else {
+        [textField resignFirstResponder];
+    }
+    
+    return YES;
+    
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if ([cell isKindOfClass:[UserDetailTextTableViewCell class]]) {
+        
+        UserDetailTextTableViewCell *userCell = (UserDetailTextTableViewCell*)cell;
+        
+        NSInteger textFieldIndex = [self.cellsTextFieldsArray indexOfObject:userCell.ibTextField];
+        
+        if (textFieldIndex == UserTextFieldTypeFirstName) {
+            
+            userCell.ibTextField.keyboardType = UIKeyboardTypeAlphabet;
+            userCell.ibTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+            userCell.ibTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+            userCell.ibTextField.returnKeyType = UIReturnKeyNext;
+            
+        } else if (textFieldIndex == UserTextFieldTypeLastName) {
+            
+            userCell.ibTextField.keyboardType = UIKeyboardTypeAlphabet;
+            userCell.ibTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+            userCell.ibTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+            userCell.ibTextField.returnKeyType = UIReturnKeyNext;
+            
+        } else if (textFieldIndex == UserTextFieldTypeEmail) {
+            
+            userCell.ibTextField.keyboardType = UIKeyboardTypeEmailAddress;
+            userCell.ibTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+            userCell.ibTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+            userCell.ibTextField.returnKeyType = UIReturnKeyDone;
+            
+        }
+        
+    }
+    
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -62,8 +143,12 @@ typedef NS_ENUM(NSInteger, UserTextFieldType) {
         
     }
     
-    if (![self.cellsTextFieldsArray containsObject:cell.ibTextField])
+    if (![self.cellsTextFieldsArray containsObject:cell.ibTextField]) {
+        
+        cell.ibTextField.delegate = self;
         [self.cellsTextFieldsArray addObject:cell.ibTextField];
+        
+    }
     
     return cell;
 }

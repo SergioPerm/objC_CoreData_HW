@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UserDetailTableViewController : UITableViewController
+@interface UserDetailTableViewController : UITableViewController <UITextFieldDelegate>
 
 @property (strong, nonatomic) User *user;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
