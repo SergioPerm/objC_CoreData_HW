@@ -16,8 +16,6 @@
 }
 
 @dynamic name;
-@dynamic departament;
-@dynamic subject;
 @dynamic students;
 
 @end

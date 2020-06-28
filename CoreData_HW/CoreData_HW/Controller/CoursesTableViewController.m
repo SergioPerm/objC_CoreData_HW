@@ -9,6 +9,7 @@
 #import "CoursesTableViewController.h"
 #import "Course+CoreDataClass.h"
 #import "CourseTableViewCell.m"
+#import "CourseDetailTableViewController.h"
 
 @interface CoursesTableViewController ()
 
@@ -104,16 +105,13 @@
 
 #pragma mark - Actions
 
-//- (IBAction)actionAddUser:(UIBarButtonItem *)sender {
-//
-////    UserDetailTableViewController *userDetailView = [self.navigationController.storyboard instantiateViewControllerWithIdentifier:@"UserDetailView"];
-////
-////    userDetailView.managedObjectContext = self.managedObjectContext;
-////
-////    [self.navigationController pushViewController:userDetailView animated:YES];
-//
-//}
-
-
-
+- (IBAction)addCourseAction:(UIBarButtonItem *)sender {
+    
+    CourseDetailTableViewController *courseDetailView = [self.navigationController.storyboard instantiateViewControllerWithIdentifier:@"CourseDetailView"];
+    
+    courseDetailView.managedObjectContext = self.managedObjectContext;
+    
+    [self.navigationController pushViewController:courseDetailView animated:YES];
+    
+}
 @end

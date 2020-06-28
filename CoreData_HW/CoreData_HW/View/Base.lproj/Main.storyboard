@@ -131,8 +131,8 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="ibNameLabel" destination="4Yp-GE-wo5" id="ZwD-0s-G8W"/>
-                                    <outlet property="ibTeacherLabel" destination="fhm-I3-xRc" id="naW-YC-TkF"/>
+                                    <outlet property="ibNameLabel" destination="4Yp-GE-wo5" id="7sI-fX-zSs"/>
+                                    <outlet property="ibTeacherLabel" destination="fhm-I3-xRc" id="n3M-Gc-rFv"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -142,7 +142,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Courses" id="Lux-kH-Z6F">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="DG8-QM-uHx"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="DG8-QM-uHx">
+                            <connections>
+                                <action selector="addCourseAction:" destination="wmN-do-cRj" id="wBH-hQ-d7u"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jmq-0V-FVe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -231,17 +235,17 @@
         <!--Course detail-->
         <scene sceneID="CmS-G3-XLd">
             <objects>
-                <tableViewController storyboardIdentifier="CourseDetailView" id="0CZ-1c-sJS" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="kYh-wb-s6F">
+                <tableViewController storyboardIdentifier="CourseDetailView" id="0CZ-1c-sJS" customClass="CourseDetailTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="kYh-wb-s6F">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="separatorColor" red="1" green="0.082393721020000005" blue="0.41043373760000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CourseTextCell" id="RiL-cV-n33" customClass="CourseDetailTextTableViewCell">
-                                <rect key="frame" x="0.0" y="28" width="375" height="49"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="48.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RiL-cV-n33" id="hom-G7-glE">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="48.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Course name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000004" translatesAutoresizingMaskIntoConstraints="NO" id="FT0-t5-gqP">
@@ -251,7 +255,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CcY-wv-Tcf">
-                                            <rect key="frame" x="153" y="7.5" width="206" height="34"/>
+                                            <rect key="frame" x="153" y="7.5" width="206" height="33.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
                                         </textField>
@@ -272,10 +276,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CourseButtonCell" id="K5j-dh-3Vc" customClass="CourseDetailAddStudentsTableViewCell">
-                                <rect key="frame" x="0.0" y="77" width="375" height="43.5"/>
+                                <rect key="frame" x="0.0" y="76.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="K5j-dh-3Vc" id="OGX-th-FAf">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AvO-Ka-svb">
@@ -298,27 +302,27 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CourseUserCell" id="RaY-1p-Qrb" customClass="CourseDetailUserTableViewCell">
-                                <rect key="frame" x="0.0" y="120.5" width="375" height="53.5"/>
+                                <rect key="frame" x="0.0" y="120.5" width="375" height="53"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RaY-1p-Qrb" id="bwY-T0-cPc">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="53.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="53"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" image="person.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="2wD-OG-EAV">
-                                            <rect key="frame" x="15" y="13" width="29" height="27.5"/>
+                                            <rect key="frame" x="15" y="13" width="29" height="27"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="28" id="Xox-DH-4Ij"/>
                                                 <constraint firstAttribute="width" secondItem="2wD-OG-EAV" secondAttribute="height" multiplier="5:7" constant="9" id="uOw-RF-vYn"/>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sergio Lechini" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YG8-a4-VkN">
-                                            <rect key="frame" x="50" y="10" width="262.5" height="21.5"/>
+                                            <rect key="frame" x="50" y="10" width="262.5" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="itotdel@list.ru" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HN4-ZT-5LB">
-                                            <rect key="frame" x="50.5" y="33.5" width="187.5" height="11"/>
+                                            <rect key="frame" x="50.5" y="33" width="187.5" height="11"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                             <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
@@ -350,7 +354,13 @@
                             <outlet property="delegate" destination="0CZ-1c-sJS" id="5EB-1Y-mX6"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Course detail" id="czN-u5-lTY"/>
+                    <navigationItem key="navigationItem" title="Course detail" id="czN-u5-lTY">
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="BNs-Cm-F6R">
+                            <connections>
+                                <action selector="saveCourseAction:" destination="0CZ-1c-sJS" id="rTO-8D-cSr"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eq3-9y-Uge" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

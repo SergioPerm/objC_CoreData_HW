@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15400" systemVersion="18G5033" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Course" representedClassName="Course" syncable="YES">
-        <attribute name="departament" optional="YES" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
-        <attribute name="subject" optional="YES" attributeType="String"/>
         <relationship name="students" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="course" inverseEntity="User"/>
     </entity>
     <entity name="User" representedClassName="User" syncable="YES">
@@ -13,7 +11,7 @@
         <relationship name="course" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Course" inverseName="students" inverseEntity="Course"/>
     </entity>
     <elements>
+        <element name="Course" positionX="-9614.80859375" positionY="-6183.44921875" width="128" height="73"/>
         <element name="User" positionX="-9928.05859375" positionY="-6179.375" width="128" height="103"/>
-        <element name="Course" positionX="-9605.31640625" positionY="-6097.39453125" width="128" height="103"/>
     </elements>
 </model>

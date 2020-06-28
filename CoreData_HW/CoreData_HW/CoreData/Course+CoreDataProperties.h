@@ -17,8 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSFetchRequest<Course *> *)fetchRequest;
 
 @property (nullable, nonatomic, copy) NSString *name;
-@property (nullable, nonatomic, copy) NSString *departament;
-@property (nullable, nonatomic, copy) NSString *subject;
 @property (nullable, nonatomic, retain) NSSet<User *> *students;
 
 @end

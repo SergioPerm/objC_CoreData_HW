@@ -10,6 +10,14 @@
 
 @implementation CourseDetailAddStudentsTableViewCell
 
+#pragma mark - Delegate methods
+
+- (void)addStudents {
+    
+    
+    
+}
+
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
@@ -22,5 +30,10 @@
 }
 
 - (IBAction)actionAddUsers:(UIButton *)sender {
+    
+    if ([self.delegate respondsToSelector:@selector(addStudents)]) {
+        [self.delegate addStudents];
+    }
+    
 }
 @end

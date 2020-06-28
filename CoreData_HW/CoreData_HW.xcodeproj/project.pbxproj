@@ -8,7 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		B110B61B24A77A2B00667561 /* CoursesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B110B61A24A77A2B00667561 /* CoursesTableViewController.m */; };
-		B110B61E24A77AE200667561 /* CourseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B110B61D24A77AE200667561 /* CourseTableViewCell.m */; };
+		B11B672A24A8B822005D8489 /* CourseDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B11B672924A8B822005D8489 /* CourseDetailTableViewController.m */; };
+		B11B672B24A8D04E005D8489 /* CourseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B110B61D24A77AE200667561 /* CourseTableViewCell.m */; };
 		B145B6F124A608800059A51C /* Course+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B145B6EB24A6087F0059A51C /* Course+CoreDataClass.m */; };
 		B145B6F224A608800059A51C /* Course+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B145B6EC24A6087F0059A51C /* Course+CoreDataProperties.m */; };
 		B145B6F324A608800059A51C /* User+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = B145B6EF24A6087F0059A51C /* User+CoreDataClass.m */; };
@@ -56,6 +57,8 @@
 		B110B61A24A77A2B00667561 /* CoursesTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoursesTableViewController.m; sourceTree = "<group>"; };
 		B110B61C24A77AE200667561 /* CourseTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseTableViewCell.h; sourceTree = "<group>"; };
 		B110B61D24A77AE200667561 /* CourseTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseTableViewCell.m; sourceTree = "<group>"; };
+		B11B672824A8B822005D8489 /* CourseDetailTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CourseDetailTableViewController.h; sourceTree = "<group>"; };
+		B11B672924A8B822005D8489 /* CourseDetailTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CourseDetailTableViewController.m; sourceTree = "<group>"; };
 		B145B6E924A6087F0059A51C /* Course+CoreDataProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Course+CoreDataProperties.h"; sourceTree = "<group>"; };
 		B145B6EA24A6087F0059A51C /* Course+CoreDataClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Course+CoreDataClass.h"; sourceTree = "<group>"; };
 		B145B6EB24A6087F0059A51C /* Course+CoreDataClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Course+CoreDataClass.m"; sourceTree = "<group>"; };
@@ -243,6 +246,8 @@
 				B16A2B2C24A7853B00C83ECD /* CourseDetailAddStudentsTableViewCell.m */,
 				B16A2B2E24A785AB00C83ECD /* CourseDetailUserTableViewCell.h */,
 				B16A2B2F24A785AB00C83ECD /* CourseDetailUserTableViewCell.m */,
+				B11B672824A8B822005D8489 /* CourseDetailTableViewController.h */,
+				B11B672924A8B822005D8489 /* CourseDetailTableViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -377,6 +382,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B11B672B24A8D04E005D8489 /* CourseTableViewCell.m in Sources */,
 				B16A2B3024A785AB00C83ECD /* CourseDetailUserTableViewCell.m in Sources */,
 				B145B6F424A608800059A51C /* User+CoreDataProperties.m in Sources */,
 				B16A2B2D24A7853B00C83ECD /* CourseDetailAddStudentsTableViewCell.m in Sources */,
@@ -389,6 +395,7 @@
 				B1698D7C249A52E900A8B9D7 /* ViewController.m in Sources */,
 				B1698D82249A52EA00A8B9D7 /* CoreData_HW.xcdatamodeld in Sources */,
 				B145B6F124A608800059A51C /* Course+CoreDataClass.m in Sources */,
+				B11B672A24A8B822005D8489 /* CourseDetailTableViewController.m in Sources */,
 				B1E39CA024A4BFC3004A908C /* UserDetailTableViewController.m in Sources */,
 				B1C82BA024A356D8002571EB /* UsersTableViewController.m in Sources */,
 				B16A2B2A24A784DC00C83ECD /* CourseDetailTextTableViewCell.m in Sources */,
@@ -396,7 +403,6 @@
 				B1C82B9A24A34CFE002571EB /* DataManager.m in Sources */,
 				B1698D76249A52E900A8B9D7 /* AppDelegate.m in Sources */,
 				B1698D79249A52E900A8B9D7 /* SceneDelegate.m in Sources */,
-				B110B61E24A77AE200667561 /* CourseTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -567,6 +573,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DUBTL9M98H;
+				GCC_NO_COMMON_BLOCKS = NO;
 				INFOPLIST_FILE = CoreData_HW/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -584,6 +591,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DUBTL9M98H;
+				GCC_NO_COMMON_BLOCKS = NO;
 				INFOPLIST_FILE = CoreData_HW/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

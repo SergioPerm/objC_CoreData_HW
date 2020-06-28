@@ -10,8 +10,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol CourseDetailAddStudentsTableViewCellDelegate <NSObject>
+
+@optional
+
+- (void)addStudents;
+
+@end
+
 @interface CourseDetailAddStudentsTableViewCell : UITableViewCell
 
+@property (weak, nonatomic) id<CourseDetailAddStudentsTableViewCellDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UIView *ibAddUsersBtn;
 - (IBAction)actionAddUsers:(UIButton *)sender;
 
