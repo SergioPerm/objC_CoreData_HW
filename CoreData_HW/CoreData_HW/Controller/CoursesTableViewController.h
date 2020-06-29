@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CoursesTableViewController : CoreDataTableViewController
+@interface CoursesTableViewController : CoreDataTableViewController <UINavigationControllerDelegate>
 
 - (IBAction)addCourseAction:(UIBarButtonItem *)sender;
 

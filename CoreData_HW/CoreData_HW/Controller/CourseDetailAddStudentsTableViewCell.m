@@ -20,7 +20,10 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    // Initialization code
+    
+    self.ibAddUsersBtn.layer.cornerRadius = 10;
+    self.ibAddUsersBtn.clipsToBounds = YES;
+    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

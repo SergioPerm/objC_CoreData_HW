@@ -14,16 +14,21 @@
 
 typedef NS_ENUM(NSInteger, CourseSectionType) {
     CourseSectionTypeInfo,
+    CourseSectionTypeAddStudents,
     CourseSectionTypeStudents
 };
 
 typedef NS_ENUM(NSInteger, CourseTextFieldType) {
-    CourseTextFieldTypeName
+    CourseTextFieldTypeName,
+    CourseTextFieldTypeTeacher
 };
 
 @interface CourseDetailTableViewController ()
 
 @property (strong, nonatomic) NSMutableArray *cellsTextFieldsArray;
+@property (strong, nonatomic) NSMutableArray *students;
+@property (strong, nonatomic) User *teacher;
+@property (strong, nonatomic) NSString *courseName;
 
 @end
 
@@ -33,62 +38,20 @@ typedef NS_ENUM(NSInteger, CourseTextFieldType) {
     [super viewDidLoad];
     
     self.cellsTextFieldsArray = [NSMutableArray array];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-}
-
-#pragma mark - FRC
-
-@synthesize fetchedResultsController = _fetchedResultsController;
-
-- (NSFetchedResultsController<User*> *)fetchedResultsController {
+    self.students = [NSMutableArray arrayWithArray:[self.course.students allObjects]];
         
-    if (_fetchedResultsController != nil) {
-        return _fetchedResultsController;
+    if (self.course) {
+        self.teacher = self.course.teacher;
+        self.courseName = self.course.name;
     }
-    
-    NSFetchRequest<User *> *fetchRequest = User.fetchRequest;
-    
-    // Set the batch size to a suitable number.
-    [fetchRequest setFetchBatchSize:20];
-
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"course contains %@", self.course];
-    [fetchRequest setPredicate:predicate];
-    
-    // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"firstName" ascending:YES];
-
-    [fetchRequest setSortDescriptors:@[sortDescriptor]];
-    
-    // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
-    NSFetchedResultsController<User *> *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
-    
-    aFetchedResultsController.delegate = self;
-    
-    NSError *error = nil;
-    if (![aFetchedResultsController performFetch:&error]) {
-        // Replace this implementation with code to handle the error appropriately.
-        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-        NSLog(@"Unresolved error %@, %@", error, error.userInfo);
-        abort();
-    }
-    
-    _fetchedResultsController = aFetchedResultsController;
-    return _fetchedResultsController;
     
 }
-
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
-    return 2;
+    return 3;
     
 }
 
@@ -98,11 +61,15 @@ typedef NS_ENUM(NSInteger, CourseTextFieldType) {
     
     if (section == CourseSectionTypeInfo) {
      
-        numberOfRows = 1;
+        numberOfRows = 2;
         
     } else if (section == CourseSectionTypeStudents) {
         
-        numberOfRows = [self.fetchedResultsController.fetchedObjects count];
+        numberOfRows = [self.students count];
+        
+    } else if (section == CourseSectionTypeAddStudents) {
+        
+        numberOfRows = 1;
         
     }
     
@@ -125,46 +92,51 @@ typedef NS_ENUM(NSInteger, CourseTextFieldType) {
             cell = [[CourseDetailTextTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
         }
         
-        cell.ibTextField.text = self.course ? self.course.name : @"";
+        if (indexPath.row == CourseTextFieldTypeName) {
+            cell.ibTextField.text = self.courseName;
+        } else {
+            cell.ibTextLabel.text = @"Teacher:";
+            cell.ibTextField.text = self.teacher ? [NSString stringWithFormat:@"%@ %@", self.teacher.firstName, self.teacher.lastName] : @"";
+            cell.ibTextField.placeholder = @"Choose a teacher";
+        }
         
         if (![self.cellsTextFieldsArray containsObject:cell.ibTextField]) {
             [self.cellsTextFieldsArray addObject:cell.ibTextField];
+            cell.ibTextField.delegate = self;
         }
         
         return cell;
         
     } else if (indexPath.section == CourseSectionTypeStudents) {
+                
+        identifier = @"CourseUserCell";
         
-        if (indexPath.row == 0) {
-            identifier = @"CourseButtonCell";
-            
-            CourseDetailAddStudentsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-            
-            if (!cell) {
-                cell = [[CourseDetailAddStudentsTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
-            }
-            
-            cell.delegate = self;
-            
-            return cell;
-            
-        } else {
-            identifier = @"CourseUserCell";
-            
-            CourseDetailUserTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-            
-            if (!cell) {
-                cell = [[CourseDetailUserTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
-            }
-            
-            User *user = [self.fetchedResultsController objectAtIndexPath:indexPath];
-            
-            cell.ibNameLabel.text = [NSString stringWithFormat:@"%@ %@", user.firstName, user.lastName];
-            cell.ibEmailLabel.text = user.email;
-            
-            return cell;
-            
+        CourseDetailUserTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        
+        if (!cell) {
+            cell = [[CourseDetailUserTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
         }
+        
+        User *user = [self.students objectAtIndex:indexPath.row];//[self.fetchedResultsController objectAtIndexPath:indexPath];
+        
+        cell.ibNameLabel.text = [NSString stringWithFormat:@"%@ %@", user.firstName, user.lastName];
+        cell.ibEmailLabel.text = user.email;
+        
+        return cell;
+                
+    } else if (indexPath.section == CourseSectionTypeAddStudents) {
+        
+        identifier = @"CourseButtonCell";
+        
+        CourseDetailAddStudentsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        
+        if (!cell) {
+            cell = [[CourseDetailAddStudentsTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
+        }
+        
+        cell.delegate = self;
+        
+        return cell;
         
     }
     
@@ -172,58 +144,138 @@ typedef NS_ENUM(NSInteger, CourseTextFieldType) {
 
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (indexPath.section == CourseSectionTypeStudents) {
+    
+        UserDetailTableViewController *userDetailView = [self.navigationController.storyboard instantiateViewControllerWithIdentifier:@"UserDetailView"];
+        
+        userDetailView.user = [self.students objectAtIndex:indexPath.row];
+        userDetailView.managedObjectContext = self.managedObjectContext;
+        userDetailView.delegate = self;
+        
+        [self.navigationController pushViewController:userDetailView animated:YES];
+        
+    } else {
+        
+        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+        
+    }
+        
+}
 
-
-/*
-// Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+    
+    return NO;
+    
 }
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    
+    if (section == CourseSectionTypeAddStudents) {
+        return @"Students";
+    }
+    
+    return @"";
+    
 }
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 #pragma mark - CourseDetailAddStudentsTableViewCellDelegate
 
 - (void)addStudents {
 
-    NSLog(@"Add students!");
+    SelectUsersTableViewController* selectUsersView = [self.storyboard instantiateViewControllerWithIdentifier:@"SelectUsersDetailView"];
+    selectUsersView.delegate = self;
+    selectUsersView.selectedUsersArray = [NSMutableArray arrayWithArray:self.students];
+    selectUsersView.multiplySelect = YES;
+    
+    UINavigationController* navCtrl = [[UINavigationController alloc] initWithRootViewController:selectUsersView];
+    
+    navCtrl.preferredContentSize = CGSizeMake(300, 180);
+    navCtrl.modalPresentationStyle = UIModalPresentationPopover;
+    
+    UIPopoverPresentationController* presentCtrl = navCtrl.popoverPresentationController;
+    presentCtrl.permittedArrowDirections = UIPopoverArrowDirectionUp;
+    presentCtrl.delegate = self;
+    presentCtrl.sourceView = self.view;
+    
+    [self presentViewController:navCtrl animated:YES completion:nil];
 
+}
+
+#pragma mark - UITxtFieldDelegate
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+    
+    if ([self.cellsTextFieldsArray objectAtIndex:CourseTextFieldTypeName] == textField) {
+     
+        self.courseName = textField.text;
+        
+    }
+    
+    return YES;
+    
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    
+    if ([self.cellsTextFieldsArray objectAtIndex:CourseTextFieldTypeTeacher] == textField) {
+        
+        SelectUsersTableViewController* selectUsersView = [self.storyboard instantiateViewControllerWithIdentifier:@"SelectUsersDetailView"];
+        selectUsersView.delegate = self;
+        selectUsersView.selectedUsersArray = [NSMutableArray arrayWithArray:@[self.teacher]];
+        selectUsersView.multiplySelect = NO;
+        
+        UINavigationController* navCtrl = [[UINavigationController alloc] initWithRootViewController:selectUsersView];
+        
+        navCtrl.preferredContentSize = CGSizeMake(300, 180);
+        navCtrl.modalPresentationStyle = UIModalPresentationPopover;
+        
+        UIPopoverPresentationController* presentCtrl = navCtrl.popoverPresentationController;
+        presentCtrl.permittedArrowDirections = UIPopoverArrowDirectionUp;
+        presentCtrl.delegate = self;
+        presentCtrl.sourceRect = [textField convertRect:textField.bounds toView:self.view];
+        presentCtrl.sourceView = self.view;
+        
+        [self presentViewController:navCtrl animated:YES completion:nil];
+        
+        return NO;
+        
+    }
+ 
+    return YES;
+    
+}
+
+#pragma mark - SelectUsersTableViewControllerDelegate
+
+- (void)saveUserSelectionWithArray:(NSMutableArray *)selectedUsersArray forTeacher:(BOOL)itsTeacher {
+    
+    if (itsTeacher) {
+        
+        if ([selectedUsersArray count] > 0) {
+            self.teacher = selectedUsersArray[0];
+        } else {
+            self.teacher = nil;
+        }
+        
+    } else {
+        
+        [self.students removeAllObjects];
+        self.students = [NSMutableArray arrayWithArray:selectedUsersArray];
+        
+    }
+        
+    [self.tableView reloadData];
+    
+}
+
+#pragma mark - UserDetailTableViewControllerDelegate
+
+- (void)saveStudentWithObject:(User *)student {
+    
+    [self.tableView reloadData];
+    
 }
 
 #pragma mark - Actions
@@ -231,12 +283,19 @@ typedef NS_ENUM(NSInteger, CourseTextFieldType) {
 - (IBAction)saveCourseAction:(UIBarButtonItem *)sender {
     
     if (!self.course) {
-        self.course = [[Course alloc] init];
+        self.course = [[Course alloc] initWithContext:self.managedObjectContext];
     }
     
-    UITextField *nametextField = [self.cellsTextFieldsArray objectAtIndex:CourseTextFieldTypeName];
+    UITextField *nameTextField = [self.cellsTextFieldsArray objectAtIndex:CourseTextFieldTypeName];
     
-    self.course.name = nametextField.text;
+    self.course.name = nameTextField.text;
+    self.course.teacher = self.teacher;
+    
+    NSSet *setRemoveStudents = [NSSet setWithArray:[self.course.students allObjects]];
+    NSSet *setStudents = [NSSet setWithArray:self.students];
+    
+    [self.course removeStudents:setRemoveStudents];
+    [self.course addStudents:setStudents];
     
     // Save the context.
     NSError *error = nil;

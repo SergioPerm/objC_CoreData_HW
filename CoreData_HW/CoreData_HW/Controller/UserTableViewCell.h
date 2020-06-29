@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *ibNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *ibEmailLabel;
 
+@property (weak, nonatomic) IBOutlet UIImageView *ibBookmarkImageView;
+
 @property (strong, nonatomic) NSString* firstName;
 @property (strong, nonatomic) NSString* lastName;
 @property (strong, nonatomic) NSString* email;

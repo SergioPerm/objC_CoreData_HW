@@ -113,28 +113,34 @@
       newIndexPath:(NSIndexPath *)newIndexPath {
     UITableView *tableView = self.tableView;
     
-    switch(type) {
-        case NSFetchedResultsChangeInsert:
-            [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeUpdate:
-            [self configureCell:[tableView cellForRowAtIndexPath:indexPath] withObject:anObject];
-            break;
-            
-        case NSFetchedResultsChangeMove:
-            [self configureCell:[tableView cellForRowAtIndexPath:indexPath] withObject:anObject];
-            [tableView moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
-            break;
-    }
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+        
+        switch(type) {
+            case NSFetchedResultsChangeInsert:
+                [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+                break;
+                
+            case NSFetchedResultsChangeDelete:
+                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                break;
+                
+            case NSFetchedResultsChangeUpdate:
+                [self configureCell:[tableView cellForRowAtIndexPath:indexPath] withObject:anObject];
+                break;
+                
+            case NSFetchedResultsChangeMove:
+                [self configureCell:[tableView cellForRowAtIndexPath:indexPath] withObject:anObject];
+                [tableView moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
+                break;
+        }
+        
+    });
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    
     [self.tableView endUpdates];
+    
 }
 
 @end

@@ -8,11 +8,19 @@
 
 #import "UserDetailTableViewController.h"
 #import "UserDetailTextTableViewCell.h"
+#import "Course+CoreDataClass.h"
+#import "CourseTableViewCell.h"
 
 typedef NS_ENUM(NSInteger, UserTextFieldType) {
     UserTextFieldTypeFirstName,
     UserTextFieldTypeLastName,
     UserTextFieldTypeEmail
+};
+
+typedef NS_ENUM(NSInteger, UserSectionType) {
+    UserSectionTypeInfo,
+    UserSectionTypeCourses,
+    UserSectionTypeTeacherInCourses
 };
 
 @interface UserDetailTableViewController ()
@@ -22,6 +30,14 @@ typedef NS_ENUM(NSInteger, UserTextFieldType) {
 @end
 
 @implementation UserDetailTableViewController
+
+#pragma mark - Delegate methods
+
+- (void)addStudents {
+    
+    
+    
+}
 
 - (void)viewDidLoad {
     
@@ -39,6 +55,25 @@ typedef NS_ENUM(NSInteger, UserTextFieldType) {
 
 #pragma mark - Methods
 
+- (NSArray*)getAllTeacheCourses {
+    
+    NSFetchRequest *fetchRequest = Course.fetchRequest;
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"teacher == %@",self.user];
+    [fetchRequest setPredicate:predicate];
+    
+    NSError *error = nil;
+    
+    NSArray *teachCourses = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+    }
+    
+    return teachCourses;
+    
+}
+
 - (BOOL)validateEmailWithString:(NSString*)email {
     
     NSString *emailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
@@ -52,10 +87,14 @@ typedef NS_ENUM(NSInteger, UserTextFieldType) {
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     
-    if (![self validateEmailWithString: textField.text]) {
-        textField.backgroundColor = [UIColor systemPinkColor];
-    } else {
-        textField.backgroundColor = nil;
+    if ([self.cellsTextFieldsArray indexOfObject:textField] == UserTextFieldTypeEmail) {
+        
+        if (![self validateEmailWithString: textField.text]) {
+            textField.backgroundColor = [UIColor systemPinkColor];
+        } else {
+            textField.backgroundColor = nil;
+        }
+        
     }
     
 }
@@ -115,42 +154,91 @@ typedef NS_ENUM(NSInteger, UserTextFieldType) {
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+    
+    if (section == UserSectionTypeInfo) {
+    
+        return 3;
+        
+    } else if (section == UserSectionTypeCourses) {
+        
+        return [self.user.course count];
+        
+    } else if (section == UserSectionTypeTeacherInCourses) {
+        
+        return [[self getAllTeacheCourses] count];
+        
+    }
+    
+    return 0;
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    UserDetailTextTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TextCell" forIndexPath:indexPath];
-        
-    if (indexPath.row == UserTextFieldTypeFirstName) {
-     
-        cell.ibLabel.text = @"First name";
-        cell.ibTextField.text = self.user ? self.user.firstName : @"";
-        
-    } else if (indexPath.row == UserTextFieldTypeLastName) {
-        
-        cell.ibLabel.text = @"Last name";
-        cell.ibTextField.text = self.user ? self.user.lastName : @"";
-        
-    } else if (indexPath.row == UserTextFieldTypeEmail) {
-        
-        cell.ibLabel.text = @"E-mail";
-        cell.ibTextField.text = self.user ? self.user.email : @"";
-        
-    }
+    UITableViewCell *cell = nil;
     
-    if (![self.cellsTextFieldsArray containsObject:cell.ibTextField]) {
+    if (indexPath.section == UserSectionTypeInfo) {
         
-        cell.ibTextField.delegate = self;
-        [self.cellsTextFieldsArray addObject:cell.ibTextField];
+        UserDetailTextTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TextCell" forIndexPath:indexPath];
+        
+        if (indexPath.row == UserTextFieldTypeFirstName) {
+            
+            cell.ibLabel.text = @"First name";
+            cell.ibTextField.text = self.user ? self.user.firstName : @"";
+            
+        } else if (indexPath.row == UserTextFieldTypeLastName) {
+            
+            cell.ibLabel.text = @"Last name";
+            cell.ibTextField.text = self.user ? self.user.lastName : @"";
+            
+        } else if (indexPath.row == UserTextFieldTypeEmail) {
+            
+            cell.ibLabel.text = @"E-mail";
+            cell.ibTextField.text = self.user ? self.user.email : @"";
+            
+        }
+        
+        if (![self.cellsTextFieldsArray containsObject:cell.ibTextField]) {
+            
+            cell.ibTextField.delegate = self;
+            [self.cellsTextFieldsArray addObject:cell.ibTextField];
+            
+        }
+        
+        return cell;
+        
+    } else if (indexPath.section == UserSectionTypeCourses) {
+        
+        CourseTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CourseCell" forIndexPath:indexPath];
+                
+        Course *course = [[self.user.course allObjects] objectAtIndex:indexPath.row];
+        
+        cell.ibNameLabel.text = course.name;
+        cell.ibTeacherLabel.text = [NSString stringWithFormat:@"%@ %@", course.teacher.firstName, course.teacher.lastName];
+        
+        return cell;
+        
+    } else if (indexPath.section == UserSectionTypeTeacherInCourses) {
+        
+        CourseTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CourseCell" forIndexPath:indexPath];
+        
+        NSArray *teachCourses = [self getAllTeacheCourses];
+        
+        Course *course = [teachCourses objectAtIndex:indexPath.row];
+        
+        cell.ibNameLabel.text = course.name;
+        cell.ibTeacherLabel.text = [NSString stringWithFormat:@"%@ %@", course.teacher.firstName, course.teacher.lastName];
+        
+        return cell;
         
     }
     
     return cell;
+    
 }
 
 // Override to support conditional editing of the table view.
@@ -163,6 +251,18 @@ typedef NS_ENUM(NSInteger, UserTextFieldType) {
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
     // Return NO if you do not want the item to be re-orderable.
     return NO;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    
+    if (section == UserSectionTypeCourses) {
+        return @"Courses:";
+    } else if (section == UserSectionTypeTeacherInCourses) {
+        return @"Teacher in courses:";
+    }
+    
+    return @"";
+    
 }
 
 #pragma mark - Actions
@@ -189,6 +289,8 @@ typedef NS_ENUM(NSInteger, UserTextFieldType) {
         
         NSLog(@"%@", user.firstName);
                 
+        self.user = user;
+        
     }
     
     // Save the context.
@@ -196,6 +298,10 @@ typedef NS_ENUM(NSInteger, UserTextFieldType) {
     if (![self.managedObjectContext save:&error]) {
         NSLog(@"Unresolved error %@, %@", error, error.userInfo);
         abort();
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(saveStudentWithObject:)]) {
+        [self.delegate saveStudentWithObject:self.user];
     }
     
     [self.navigationController popViewControllerAnimated:YES];

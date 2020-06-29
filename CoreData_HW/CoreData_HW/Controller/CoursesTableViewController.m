@@ -8,8 +8,9 @@
 
 #import "CoursesTableViewController.h"
 #import "Course+CoreDataClass.h"
-#import "CourseTableViewCell.m"
+#import "CourseTableViewCell.h"
 #import "CourseDetailTableViewController.h"
+#import "User+CoreDataClass.h"
 
 @interface CoursesTableViewController ()
 
@@ -20,11 +21,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
+    self.navigationController.delegate = self;
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 #pragma mark - FRC
@@ -71,7 +69,7 @@
 - (void)configureCell:(CourseTableViewCell *)cell withObject:(Course*)dataObject {
 
     cell.ibNameLabel.text = dataObject.name;
-    cell.ibTeacherLabel.text = @""; //temporary teacher unavaible
+    cell.ibTeacherLabel.text = dataObject.teacher ? [NSString stringWithFormat:@"%@ %@", dataObject.teacher.firstName, dataObject.teacher.lastName] : @"";
 
 }
 
@@ -93,14 +91,20 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    CourseDetailTableViewController *courseDetailView = [self.navigationController.storyboard instantiateViewControllerWithIdentifier:@"CourseDetailView"];
+    
+    courseDetailView.managedObjectContext = self.managedObjectContext;
+    courseDetailView.course = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    
+    [self.navigationController pushViewController:courseDetailView animated:YES];
 
-//    UserDetailTableViewController *userDetailView = [self.navigationController.storyboard instantiateViewControllerWithIdentifier:@"UserDetailView"];
-//
-//    userDetailView.user = [self.fetchedResultsController objectAtIndexPath:indexPath];
-//    userDetailView.managedObjectContext = self.managedObjectContext;
-//
-//    [self.navigationController pushViewController:userDetailView animated:YES];
+}
 
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    
+    [self.managedObjectContext refreshAllObjects];
+    
 }
 
 #pragma mark - Actions
