@@ -17,8 +17,28 @@
     
     [super viewDidLoad];
     
+//    [self deleteAllEntities:@"User"];
+//    [self deleteAllEntities:@"Course"];
+    
 //    NSArray * urls = [NSFileManager.defaultManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
 //    NSLog(@"%@",[urls description]);
+    
+}
+
+- (void)deleteAllEntities:(NSString *)nameEntity {
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:nameEntity];
+    [fetchRequest setIncludesPropertyValues:NO]; //only fetch the managedObjectID
+
+    NSError *error;
+    NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    for (NSManagedObject *object in fetchedObjects)
+    {
+        [self.managedObjectContext deleteObject:object];
+    }
+
+    error = nil;
+    [self.managedObjectContext save:&error];
     
 }
 

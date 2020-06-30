@@ -11,6 +11,7 @@
 #import "CourseDetailTextTableViewCell.h"
 #import "CourseDetailAddStudentsTableViewCell.h"
 #import "CourseDetailUserTableViewCell.h"
+#import "CourseSubject+CoreDataClass.h"
 
 typedef NS_ENUM(NSInteger, CourseSectionType) {
     CourseSectionTypeInfo,
@@ -20,6 +21,7 @@ typedef NS_ENUM(NSInteger, CourseSectionType) {
 
 typedef NS_ENUM(NSInteger, CourseTextFieldType) {
     CourseTextFieldTypeName,
+    CourseTextFieldTypeSubject,
     CourseTextFieldTypeTeacher
 };
 
@@ -29,6 +31,7 @@ typedef NS_ENUM(NSInteger, CourseTextFieldType) {
 @property (strong, nonatomic) NSMutableArray *students;
 @property (strong, nonatomic) User *teacher;
 @property (strong, nonatomic) NSString *courseName;
+@property (strong, nonatomic) CourseSubject *subject;
 
 @end
 
@@ -43,6 +46,7 @@ typedef NS_ENUM(NSInteger, CourseTextFieldType) {
     if (self.course) {
         self.teacher = self.course.teacher;
         self.courseName = self.course.name;
+        self.subject = self.course.subject;
     }
     
 }
@@ -61,7 +65,7 @@ typedef NS_ENUM(NSInteger, CourseTextFieldType) {
     
     if (section == CourseSectionTypeInfo) {
      
-        numberOfRows = 2;
+        numberOfRows = 3;
         
     } else if (section == CourseSectionTypeStudents) {
         
@@ -94,6 +98,9 @@ typedef NS_ENUM(NSInteger, CourseTextFieldType) {
         
         if (indexPath.row == CourseTextFieldTypeName) {
             cell.ibTextField.text = self.courseName;
+        } else if (indexPath.row == CourseTextFieldTypeSubject) {
+            cell.ibTextLabel.text = @"Subject:";
+            cell.ibTextField.text = self.subject ? self.subject.name : @"";
         } else {
             cell.ibTextLabel.text = @"Teacher:";
             cell.ibTextField.text = self.teacher ? [NSString stringWithFormat:@"%@ %@", self.teacher.firstName, self.teacher.lastName] : @"";
@@ -210,7 +217,7 @@ typedef NS_ENUM(NSInteger, CourseTextFieldType) {
     if ([self.cellsTextFieldsArray objectAtIndex:CourseTextFieldTypeName] == textField) {
      
         self.courseName = textField.text;
-        
+                
     }
     
     return YES;
@@ -223,7 +230,10 @@ typedef NS_ENUM(NSInteger, CourseTextFieldType) {
         
         SelectUsersTableViewController* selectUsersView = [self.storyboard instantiateViewControllerWithIdentifier:@"SelectUsersDetailView"];
         selectUsersView.delegate = self;
-        selectUsersView.selectedUsersArray = [NSMutableArray arrayWithArray:@[self.teacher]];
+        
+        if (self.teacher)
+            selectUsersView.selectedUsersArray = [NSMutableArray arrayWithArray:@[self.teacher]];
+        
         selectUsersView.multiplySelect = NO;
         
         UINavigationController* navCtrl = [[UINavigationController alloc] initWithRootViewController:selectUsersView];
@@ -241,9 +251,40 @@ typedef NS_ENUM(NSInteger, CourseTextFieldType) {
         
         return NO;
         
+    } else if ([self.cellsTextFieldsArray objectAtIndex:CourseTextFieldTypeSubject] == textField) {
+        
+        SubjectsTableViewController *subjectsView = [self.storyboard instantiateViewControllerWithIdentifier:@"SubjectsView"];
+        subjectsView.delegate = self;
+        
+        UINavigationController* navCtrl = [[UINavigationController alloc] initWithRootViewController:subjectsView];
+        
+        navCtrl.preferredContentSize = CGSizeMake(300, 180);
+        navCtrl.modalPresentationStyle = UIModalPresentationPopover;
+        
+        UIPopoverPresentationController* presentCtrl = navCtrl.popoverPresentationController;
+        presentCtrl.permittedArrowDirections = UIPopoverArrowDirectionUp;
+        presentCtrl.delegate = self;
+        presentCtrl.sourceRect = [textField convertRect:textField.bounds toView:self.view];
+        presentCtrl.sourceView = self.view;
+        
+        [self presentViewController:navCtrl animated:YES completion:nil];
+        
+        return NO;
+        
     }
  
     return YES;
+    
+}
+
+#pragma mark - SubjectsTableViewControllerDelegate
+
+- (void)selectSubject:(CourseSubject *)subject {
+    
+    self.subject = subject;
+    
+    UITextField *textField = [self.cellsTextFieldsArray objectAtIndex:CourseTextFieldTypeSubject];
+    textField.text = subject.name;
     
 }
 
@@ -286,9 +327,8 @@ typedef NS_ENUM(NSInteger, CourseTextFieldType) {
         self.course = [[Course alloc] initWithContext:self.managedObjectContext];
     }
     
-    UITextField *nameTextField = [self.cellsTextFieldsArray objectAtIndex:CourseTextFieldTypeName];
-    
-    self.course.name = nameTextField.text;
+    self.course.name = self.courseName;
+    self.course.subject = self.subject;
     self.course.teacher = self.teacher;
     
     NSSet *setRemoveStudents = [NSSet setWithArray:[self.course.students allObjects]];

@@ -12,10 +12,11 @@
 #import "CourseDetailAddStudentsTableViewCell.h"
 #import "SelectUsersTableViewController.h"
 #import "UserDetailTableViewController.h"
+#import "SubjectsTableViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CourseDetailTableViewController : CoreDataTableViewController <UITextFieldDelegate, CourseDetailAddStudentsTableViewCellDelegate, SelectUsersTableViewControllerDelegate, UIPopoverPresentationControllerDelegate, UserDetailTableViewControllerDelegate>
+@interface CourseDetailTableViewController : CoreDataTableViewController <UITextFieldDelegate, CourseDetailAddStudentsTableViewCellDelegate, SelectUsersTableViewControllerDelegate, UIPopoverPresentationControllerDelegate, UserDetailTableViewControllerDelegate, SubjectsTableViewControllerDelegate>
 
 - (IBAction)saveCourseAction:(UIBarButtonItem *)sender;
 

@@ -23,7 +23,7 @@
 #pragma mark - TableView
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    
+        
     return [[self.fetchedResultsController sections] count];
     
 }
@@ -86,9 +86,9 @@
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
     
-    dispatch_async(dispatch_get_main_queue(), ^(void){
+    //dispatch_async(dispatch_get_main_queue(), ^(void){
         [self.tableView beginUpdates];
-    });
+    //});
     
 }
 
@@ -113,7 +113,7 @@
       newIndexPath:(NSIndexPath *)newIndexPath {
     UITableView *tableView = self.tableView;
     
-    dispatch_async(dispatch_get_main_queue(), ^(void){
+//    dispatch_async(dispatch_get_main_queue(), ^(void){
         
         switch(type) {
             case NSFetchedResultsChangeInsert:
@@ -134,7 +134,7 @@
                 break;
         }
         
-    });
+//    });
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {

@@ -101,11 +101,11 @@
 
 }
 
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
-    
-    [self.managedObjectContext refreshAllObjects];
-    
-}
+//- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+//
+//    [self.managedObjectContext refreshAllObjects];
+//
+//}
 
 #pragma mark - Actions
 
