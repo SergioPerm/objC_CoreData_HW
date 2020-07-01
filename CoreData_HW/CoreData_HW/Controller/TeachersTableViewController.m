@@ -12,6 +12,7 @@
 #import "UserTableViewCell.h"
 #import "UserDetailTableViewController.h"
 #import "CourseSubject+CoreDataClass.h"
+#import "SubjectTableViewCell.h"
 
 @interface TeachersTableViewController ()
 
@@ -62,7 +63,13 @@
         if ([courses count] == 0)
             continue;
         
-        [self.subjectsData setObject:courses forKey:subject.name];
+        NSArray *teachers = [courses valueForKeyPath:@"@distinctUnionOfObjects.teacher"];
+        
+        for (User *user in teachers) {
+            NSLog(@"%@", user.firstName);
+        }
+        
+        [self.subjectsData setObject:teachers forKey:subject.name];
         
     }
     
@@ -81,9 +88,9 @@
     NSArray *subjects = [self.subjectsData allKeys];
     id subjectKey = [subjects objectAtIndex:section];
     
-    NSArray *courses = [self.subjectsData objectForKey:subjectKey];
+    NSArray *teachers = [self.subjectsData objectForKey:subjectKey];
         
-    return courses.count;
+    return teachers.count;
 
 }
 
@@ -104,34 +111,45 @@
         cell = [[UserTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
     }
 
-//    id<NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][indexPath.section];
-//
-//    NSArray *distinctObjects = [sectionInfo.objects valueForKeyPath:@"@distinctUnionOfObjects.teacher"];
-//
-//    User *dataObject = [distinctObjects objectAtIndex:indexPath.row];
-//
-//    //Course *dataObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
-//    [self configureCell:cell withObject:dataObject];
+    NSArray *subjects = [self.subjectsData allKeys];
+    id subjectKey = [subjects objectAtIndex:indexPath.section];
+    
+    NSArray *teachers = [self.subjectsData objectForKey:subjectKey];
 
+    User *user = [teachers objectAtIndex:indexPath.row];
+    
+    NSLog(@"%@", user.firstName);
+    
+    [self configureCell:cell withObject:user];
+    
     return cell;
 
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
- 
-    return @"";
+    
+    NSArray *subjects = [self.subjectsData allKeys];
+    NSString *subjectName = [subjects objectAtIndex:section];
+    
+    return subjectName;
     
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-//    UserDetailTableViewController *userDetailView = [self.navigationController.storyboard instantiateViewControllerWithIdentifier:@"UserDetailView"];
-//
-//    Course *course = [self.fetchedResultsController objectAtIndexPath:indexPath];
-//    userDetailView.user = course.teacher;
-//    userDetailView.managedObjectContext = self.managedObjectContext;
-//
-//    [self.navigationController pushViewController:userDetailView animated:YES];
+    UserDetailTableViewController *userDetailView = [self.navigationController.storyboard instantiateViewControllerWithIdentifier:@"UserDetailView"];
+
+    NSArray *subjects = [self.subjectsData allKeys];
+    id subjectKey = [subjects objectAtIndex:indexPath.section];
+    
+    NSArray *teachers = [self.subjectsData objectForKey:subjectKey];
+
+    User *user = [teachers objectAtIndex:indexPath.row];
+    
+    userDetailView.user = user;
+    userDetailView.managedObjectContext = self.managedObjectContext;
+
+    [self.navigationController pushViewController:userDetailView animated:YES];
     
 }
 
