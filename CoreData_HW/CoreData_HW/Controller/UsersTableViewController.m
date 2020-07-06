@@ -23,6 +23,39 @@
 //    NSArray * urls = [NSFileManager.defaultManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
 //    NSLog(@"%@",[urls description]);
     
+    //[self generateUsers];
+    
+}
+
+- (void)generateUsers {
+    
+    NSDictionary* testNames = [self JSONFromFile];
+            
+    for (NSDictionary* nameDict in testNames) {
+        
+        NSString* fullName = [nameDict objectForKey:@"name"];
+
+        NSArray* fullNameArr = [fullName componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+
+        User *user = [[User alloc] initWithContext:self.managedObjectContext];
+        
+        user.firstName = [fullNameArr objectAtIndex:0];
+        user.lastName = [fullNameArr objectAtIndex:1];
+        user.email = [NSString stringWithFormat:@"%@@mail.ru",[user.lastName substringToIndex:3]];
+                
+        NSLog(@"%@", user.fullName);
+                
+    }
+    
+    [self.managedObjectContext save:nil];
+    
+}
+
+- (NSDictionary *)JSONFromFile
+{
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"names" ofType:@"json"];
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    return [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
 }
 
 - (void)deleteAllEntities:(NSString *)nameEntity {
@@ -101,6 +134,7 @@
     }
     
     User *dataObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        
     [self configureCell:cell withObject:dataObject];
     
     return cell;

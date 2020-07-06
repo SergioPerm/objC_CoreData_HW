@@ -19,13 +19,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface SelectUsersTableViewController : CoreDataTableViewController
+@interface SelectUsersTableViewController : CoreDataTableViewController <UISearchBarDelegate>
 
 @property (weak, nonatomic) id<SelectUsersTableViewControllerDelegate> delegate;
 @property (assign, nonatomic) BOOL multiplySelect;
 @property (strong, nonatomic) NSMutableArray *selectedUsersArray;
 
 - (IBAction)saveUsersAction:(UIBarButtonItem *)sender;
+@property (weak, nonatomic) IBOutlet UISearchBar *ibSearchBar;
 
 
 @end

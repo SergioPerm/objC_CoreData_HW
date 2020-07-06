@@ -12,6 +12,8 @@
 
 @interface SelectUsersTableViewController ()
 
+@property (strong, nonatomic) NSString *searchFilter;
+
 @end
 
 @implementation SelectUsersTableViewController
@@ -30,6 +32,8 @@
     if (!self.selectedUsersArray) {
         self.selectedUsersArray = [NSMutableArray array];
     }
+    
+    self.searchFilter = @"";
     
 }
 
@@ -52,6 +56,13 @@
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"firstName" ascending:YES];
 
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
+
+    if (![self.searchFilter isEqualToString:@""]) {
+        
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"fullName CONTAINS[cd] %@", self.searchFilter];
+        [fetchRequest setPredicate:predicate];
+        
+    }
     
     // Edit the section name key path and cache name if appropriate.
     // nil for section name key path means "no sections".
@@ -127,6 +138,31 @@
         [self.selectedUsersArray addObject:user];
         
     }
+    
+    [self.tableView reloadData];
+    
+}
+
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    
+    [searchBar setShowsCancelButton:YES animated:YES];
+    
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    
+    [searchBar resignFirstResponder];
+    [searchBar setShowsCancelButton:NO animated:YES];
+    
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    
+    self.searchFilter = searchText;
+    
+    self.fetchedResultsController = nil;
     
     [self.tableView reloadData];
     

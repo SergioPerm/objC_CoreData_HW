@@ -18,7 +18,9 @@
 @dynamic email;
 @dynamic firstName;
 @dynamic lastName;
+@dynamic fullName;
 @dynamic course;
 @dynamic teachCourse;
+
 
 @end

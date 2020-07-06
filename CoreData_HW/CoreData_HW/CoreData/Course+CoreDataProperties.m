@@ -17,7 +17,7 @@
 
 @dynamic name;
 @dynamic students;
-@dynamic teacher;
 @dynamic subject;
+@dynamic teacher;
 
 @end

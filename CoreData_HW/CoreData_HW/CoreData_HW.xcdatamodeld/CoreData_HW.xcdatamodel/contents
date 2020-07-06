@@ -12,13 +12,14 @@
     <entity name="User" representedClassName="User" syncable="YES">
         <attribute name="email" optional="YES" attributeType="String"/>
         <attribute name="firstName" attributeType="String"/>
+        <attribute name="fullName" optional="YES" attributeType="String"/>
         <attribute name="lastName" optional="YES" attributeType="String"/>
         <relationship name="course" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Course" inverseName="students" inverseEntity="Course"/>
         <relationship name="teachCourse" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Course" inverseName="teacher" inverseEntity="Course"/>
     </entity>
     <elements>
         <element name="Course" positionX="-11875.23046875" positionY="-3639.078125" width="128" height="103"/>
-        <element name="User" positionX="-12164.609375" positionY="-3702.70703125" width="128" height="118"/>
         <element name="CourseSubject" positionX="-11751.21484375" positionY="-3733.68359375" width="128" height="58"/>
+        <element name="User" positionX="-12164.609375" positionY="-3702.70703125" width="128" height="133"/>
     </elements>
 </model>

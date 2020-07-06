@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, copy) NSString *email;
 @property (nullable, nonatomic, copy) NSString *firstName;
 @property (nullable, nonatomic, copy) NSString *lastName;
+@property (nullable, nonatomic, copy) NSString *fullName;
 @property (nullable, nonatomic, retain) NSSet<Course *> *course;
 @property (nullable, nonatomic, retain) NSSet<Course *> *teachCourse;
 

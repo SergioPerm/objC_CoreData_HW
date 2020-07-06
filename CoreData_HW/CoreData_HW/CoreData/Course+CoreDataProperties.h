@@ -18,8 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nullable, nonatomic, copy) NSString *name;
 @property (nullable, nonatomic, retain) NSSet<User *> *students;
-@property (nullable, nonatomic, retain) User *teacher;
 @property (nullable, nonatomic, retain) CourseSubject *subject;
+@property (nullable, nonatomic, retain) User *teacher;
 
 @end
 

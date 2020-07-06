@@ -224,6 +224,15 @@ typedef NS_ENUM(NSInteger, CourseTextFieldType) {
     
 }
 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+        
+    NSString *courseName = [NSString stringWithFormat:@"%@%@", textField.text, string];
+    self.courseName = courseName;
+    
+    return YES;
+    
+}
+
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     
     if ([self.cellsTextFieldsArray objectAtIndex:CourseTextFieldTypeTeacher] == textField) {
